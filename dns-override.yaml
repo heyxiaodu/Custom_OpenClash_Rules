@@ -1,6 +1,7 @@
-# OpenClash DNS 防泄漏覆写配置
+# OpenClash DNS 防泄漏覆写配置（最终版）
 # 作者：基于 Aethersailor/Custom_OpenClash_Rules 项目
 # 使用方法：在 OpenClash LuCI 界面 → 覆写设置 → DNS设置 中粘贴以下内容
+# 注意：此配置移除了所有国内DNS，仅使用国外加密DNS，防止透明DNS劫持导致泄露
 
 dns:
   enable: true
@@ -14,12 +15,11 @@ dns:
     - https://1.1.1.1/dns-query
     - https://dns.google/dns-query
     - tls://1.1.1.1:853
-  # 国内域名：通过 DoH 直连国内 DNS（加密，不走代理，速度快）
-  # 已移除明文 DNS，防止 ISP 透明 DNS 拦截导致泄露
+  # Fallback：仅使用国外 DoH/DoT，不使用任何国内 DNS
+  # 移除了 doh.pub / alidns 等国内 DoH（会被透明劫持）
   fallback:
-    - https://doh.pub/dns-query
-    - https://dns.alidns.com/dns-query
     - https://dns.cloudflare.com/dns-query
+    - https://dns.google/dns-query
     - tls://dot.quad9.net:853
   fallback-filter:
     geoip: true
